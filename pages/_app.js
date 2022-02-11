@@ -26,13 +26,13 @@ const theme = extendTheme({
     styles: {
         global: {
             'html, body': {
-                'min-width': '360px',
-                'scroll-behavior': 'smooth'
+                minWidth: '360px',
+                scrollBehavior: 'smooth'
             },
             '#__next': {
                 display: 'flex',
-                'flex-direction': 'column',
-                'min-height': '100vh'
+                flexDirection: 'column',
+                minHeight: '100vh'
             }
         }
     }
