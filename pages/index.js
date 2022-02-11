@@ -1,19 +1,12 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth';
-import {
-    Button,
-    Container,
-    Flex,
-    Heading,
-    Spacer,
-    Text
-} from '@chakra-ui/react';
+import { Button, Container, Flex, Heading, Text } from '@chakra-ui/react';
 
 export default function Home() {
     const auth = useAuth();
     return (
-        <Container paddingTop={'10'}>
+        <Container>
             <Head>
                 <title>Quick Feedback</title>
                 <meta
@@ -22,33 +15,44 @@ export default function Home() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Heading textAlign={'center'}>Quick Feedback</Heading>
-            {auth.user ? (
-                <Flex
-                    gap={'4'}
-                    direction={'column'}
-                    align={'center'}
-                    paddingTop={'10'}
-                >
-                    <Flex align={'center'} justify={'center'}>
-                        <Image
-                            layout="intrinsic"
-                            height={50}
-                            width={50}
-                            src={auth.user.image}
-                            alt={`Image of ${auth.user.name}`}
-                        />
-                        <Text fontWeight={600}>{auth.user.name}</Text>
+            <Flex
+                as="main"
+                direction="column"
+                align={'center'}
+                justify={'center'}
+                minHeight="100vh"
+            >
+                <Heading textAlign={'center'}>Quick Feedback</Heading>
+                {auth.user ? (
+                    <Flex
+                        gap={'4'}
+                        direction={'column'}
+                        align={'center'}
+                        paddingTop={'10'}
+                    >
+                        <Flex align={'center'} justify={'center'}>
+                            <Image
+                                layout="intrinsic"
+                                height={50}
+                                width={50}
+                                src={auth.user.image}
+                                alt={`Image of ${auth.user.name}`}
+                            />
+                            <Text fontWeight={600}>{auth.user.name}</Text>
+                        </Flex>
+                        <Button minWidth="64" onClick={(e) => auth.signout()}>
+                            Sign Out
+                        </Button>
                     </Flex>
-                    <Button minWidth="64" onClick={(e) => auth.signout()}>
-                        Sign Out
+                ) : (
+                    <Button
+                        minWidth="64"
+                        onClick={(e) => auth.signinWithGithub()}
+                    >
+                        Sign In
                     </Button>
-                </Flex>
-            ) : (
-                <Button minWidth="64" onClick={(e) => auth.signinWithGithub()}>
-                    Sign In
-                </Button>
-            )}
+                )}
+            </Flex>
         </Container>
     );
 }
