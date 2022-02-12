@@ -1,5 +1,3 @@
-import { useForm } from 'react-hook-form';
-
 import {
     Modal,
     ModalOverlay,
@@ -14,19 +12,26 @@ import {
     Button,
     useDisclosure
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { useRef } from 'react';
 import { createSite } from '@/lib/firestore';
 import { useToast } from '@chakra-ui/react';
+import { useAuth } from '@/lib/auth';
 
 export default function AddSiteModal() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, errors } = useForm();
     const initialRef = useRef();
     const toast = useToast();
+    const auth = useAuth();
 
     const onSubmit = async (values) => {
         console.log(values);
-        await createSite(values)
+        await createSite({
+            authorId: auth.user.uid,
+            ...values,
+            createdAt: new Date().toISOString()
+        })
             .then(() => {
                 toast({
                     title: 'Site created',
