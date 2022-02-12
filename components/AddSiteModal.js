@@ -1,5 +1,3 @@
-import { useForm } from 'react-hook-form';
-
 import {
     Modal,
     ModalOverlay,
@@ -14,33 +12,42 @@ import {
     Button,
     useDisclosure
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { useRef } from 'react';
 import { createSite } from '@/lib/firestore';
 import { useToast } from '@chakra-ui/react';
+import { useAuth } from '@/lib/auth';
+import useSWR, { mutate } from 'swr';
 
-export default function AddSiteModal() {
+export default function AddSiteModal({ color, backgroundColor, label }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { register, handleSubmit, errors } = useForm();
     const initialRef = useRef();
     const toast = useToast();
+    const auth = useAuth();
 
     const onSubmit = async (values) => {
         console.log(values);
-        await createSite(values)
+        await createSite({
+            authorId: auth.user.uid,
+            ...values,
+            createdAt: new Date().toISOString()
+        })
             .then(() => {
                 toast({
-                    title: 'Site created',
-                    description: 'Site created successfully',
+                    title: 'Site added',
+                    description: `${values['site-name']} added successfully`,
                     status: 'success',
                     duration: 5000,
                     isClosable: true
                 });
+                mutate('/api/sites');
                 onClose();
             })
             .catch((e) => {
                 toast({
                     title: 'Error occured',
-                    description: 'Site not created',
+                    description: 'Site not added',
                     status: 'error',
                     duration: 5000,
                     isClosable: true
@@ -55,10 +62,11 @@ export default function AddSiteModal() {
                 onClick={onOpen}
                 variant="solid"
                 size="md"
-                color="gray.900"
+                color={color}
+                backgroundColor={backgroundColor}
                 mt={8}
             >
-                Add Your First Site
+                {label}
             </Button>
             <Modal
                 initialFocusRef={initialRef}
