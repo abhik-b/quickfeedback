@@ -17,7 +17,7 @@ import { useRef } from 'react';
 import { createSite } from '@/lib/firestore';
 import { useToast } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
-import useSWR, { mutate } from 'swr';
+import { mutate } from 'swr';
 
 export default function AddSiteModal({ color, backgroundColor, label }) {
     const { isOpen, onOpen, onClose } = useDisclosure();

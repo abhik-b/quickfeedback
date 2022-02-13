@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Skeleton } from '@chakra-ui/react';
 import { Table, Tr, Th, Td } from './Table';
+import Link from 'next/link';
 
 const SkeletonRow = ({ width }) => (
     <Box as="tr">
@@ -37,7 +38,9 @@ const SiteTable = ({ sites }) => {
                         <Box as="tr" key={site.id}>
                             <Td fontWeight="medium">{site['site-name']}</Td>
                             <Td color="purple">{site['site-link']}</Td>
-                            <Td>{site['site-name']}</Td>
+                            <Td>
+                                <Link href={`/p/${siteID}`}>View Feedback</Link>
+                            </Td>
                             <Td>{site.createdAt}</Td>
                         </Box>
                     );

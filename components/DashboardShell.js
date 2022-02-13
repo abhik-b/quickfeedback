@@ -3,15 +3,11 @@ import {
     ChakraProvider,
     Flex,
     Link,
-    Stack,
-    Icon,
     Avatar,
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbLink,
-    Heading,
-    Text,
-    Button
+    Heading
 } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
 import AddSiteModal from './AddSiteModal';
