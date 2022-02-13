@@ -1,7 +1,5 @@
 import React from 'react';
-import Dashboard from './DashboardShell';
-import { Box, Text, Button, Heading } from '@chakra-ui/react';
-import DashboardShell from './DashboardShell';
+import { Box, Text, Heading } from '@chakra-ui/react';
 import AddSiteModal from './AddSiteModal';
 
 export default function EmptyState() {
