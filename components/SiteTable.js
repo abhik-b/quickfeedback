@@ -39,7 +39,9 @@ const SiteTable = ({ sites }) => {
                             <Td fontWeight="medium">{site['site-name']}</Td>
                             <Td color="purple">{site['site-link']}</Td>
                             <Td>
-                                <Link href={`/p/${siteID}`}>View Feedback</Link>
+                                <Link href={`/p/${site.id}`}>
+                                    View Feedback
+                                </Link>
                             </Td>
                             <Td>{site.createdAt}</Td>
                         </Box>

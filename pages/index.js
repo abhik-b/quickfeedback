@@ -1,7 +1,17 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth';
-import { Button, Container, Flex, Heading, Text } from '@chakra-ui/react';
+import { LogoGithub } from '@chakra-icons/ionicons';
+import { LogoGoogle } from '@chakra-icons/ionicons';
+import {
+    Button,
+    Container,
+    Flex,
+    Heading,
+    Stack,
+    Text
+} from '@chakra-ui/react';
+import Link from 'next/link';
 
 export default function Home() {
     const auth = useAuth();
@@ -40,17 +50,35 @@ export default function Home() {
                             />
                             <Text fontWeight={600}>{auth.user.name}</Text>
                         </Flex>
-                        <Button minWidth="64" onClick={(e) => auth.signout()}>
-                            Sign Out
-                        </Button>
+                        <Stack mt={8} gap={2}>
+                            <Button>
+                                <Link href="/dashboard">Dashboard</Link>
+                            </Button>
+                            <Button
+                                minWidth="64"
+                                onClick={(e) => auth.signout()}
+                            >
+                                Sign Out
+                            </Button>
+                        </Stack>
                     </Flex>
                 ) : (
-                    <Button
-                        minWidth="64"
-                        onClick={(e) => auth.signinWithGithub()}
-                    >
-                        Sign In
-                    </Button>
+                    <Stack mt={8} gap={2}>
+                        <Button
+                            leftIcon={<LogoGithub />}
+                            minWidth="64"
+                            onClick={(e) => auth.signinWithGithub()}
+                        >
+                            Sign In with Github
+                        </Button>
+                        <Button
+                            leftIcon={<LogoGoogle />}
+                            minWidth="64"
+                            onClick={(e) => auth.signinWithGoogle()}
+                        >
+                            Sign In with Google
+                        </Button>
+                    </Stack>
                 )}
             </Flex>
         </Container>

@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Heading, Text, Divider } from '@chakra-ui/react';
 
 export default function Feedback({ author, textContent, createdAt }) {
-    console.log(typeof author, author, typeof textContent, textContent);
     return (
         <Box borderRadius={4} p={2} maxWidth="700px" w="full">
+            <Divider borderColor="gray.200" backgroundColor="gray.200" my={8} />
             <Heading
                 size="sm"
                 as="h4"
@@ -20,7 +20,6 @@ export default function Feedback({ author, textContent, createdAt }) {
             <Text fontSize={'lg'} color="gray.800">
                 {textContent}
             </Text>
-            <Divider borderColor="gray.200" backgroundColor="gray.200" my={8} />
         </Box>
     );
 }

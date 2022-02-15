@@ -28,12 +28,15 @@ export default function AddSiteModal({ color, backgroundColor, label }) {
 
     const onSubmit = async (values) => {
         console.log(values);
+
         await createSite({
             authorId: auth.user.uid,
             ...values,
             createdAt: new Date().toISOString()
         })
-            .then(() => {
+            .then((doc) => {
+                console.log(doc);
+                mutate(auth.user ? ['/api/sites', auth.user.token] : null);
                 toast({
                     title: 'Site added',
                     description: `${values['site-name']} added successfully`,
@@ -41,7 +44,6 @@ export default function AddSiteModal({ color, backgroundColor, label }) {
                     duration: 5000,
                     isClosable: true
                 });
-                mutate('/api/sites');
                 onClose();
             })
             .catch((e) => {

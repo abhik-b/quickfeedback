@@ -1,7 +1,18 @@
 import Feedback from '@/components/Feedback';
 import { useAuth } from '@/lib/auth';
-import { createFeedback, getAllFeedback, getAllSites } from '@/lib/firestore';
-import { Box, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
+import {
+    createFeedback,
+    getAllFeedbackSite,
+    getAllSites
+} from '@/lib/firestore';
+import {
+    Box,
+    FormControl,
+    FormLabel,
+    Input,
+    Button,
+    Flex
+} from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
@@ -9,7 +20,7 @@ import useSWR from 'swr';
 
 export async function getStaticProps(context) {
     const siteID = context.params.siteID;
-    const feedbacks = await getAllFeedback(siteID);
+    const feedbacks = await getAllFeedbackSite(siteID);
     return {
         props: {
             initialFeedback: feedbacks
@@ -35,7 +46,7 @@ export default function SiteFeedback({ initialFeedback }) {
     const inputRef = useRef(null);
     const [allFeedback, setAllFeedback] = useState(initialFeedback);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
         const newFeedback = {
             author: auth.user.name,
@@ -46,8 +57,10 @@ export default function SiteFeedback({ initialFeedback }) {
             provider: auth.user.provider,
             status: 'pending'
         };
-        createFeedback(newFeedback);
-        setAllFeedback([newFeedback, ...allFeedback]);
+        const newFeedbackID = await createFeedback(newFeedback).then((doc) => {
+            return doc;
+        });
+        setAllFeedback([{ id: newFeedbackID, ...newFeedback }, ...allFeedback]);
     };
 
     return (
@@ -60,38 +73,44 @@ export default function SiteFeedback({ initialFeedback }) {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <Box
-                as="form"
-                padding={4}
-                display={'flex'}
-                flexDirection="column"
-                maxWidth={'700px'}
+            <Flex
+                justifyContent={'center'}
+                direction={'column'}
                 width="full"
-                onSubmit={onSubmit}
+                alignItems={'center'}
             >
-                <FormControl my={8}>
-                    <FormLabel htmlFor="feedback">
-                        Comment Down Below :
-                    </FormLabel>
-                    <Input ref={inputRef} id="feedback" type="text" />
-                    <Button my={4} type="submit">
-                        Submit Your Feedback
-                    </Button>
-                </FormControl>
-            </Box>
-            <Box
-                as="ul"
-                display={'flex'}
-                flexDirection="column"
-                maxWidth={'700px'}
-                width="full"
-                padding={4}
-            >
-                {allFeedback.map((feedback) => {
-                    return <Feedback key={feedback.id} {...feedback} />;
-                })}
-            </Box>
+                <Box
+                    as="form"
+                    padding={4}
+                    display={'flex'}
+                    flexDirection="column"
+                    maxWidth={'700px'}
+                    width="full"
+                    onSubmit={onSubmit}
+                >
+                    <FormControl my={8}>
+                        <FormLabel htmlFor="feedback">
+                            Comment Down Below :
+                        </FormLabel>
+                        <Input ref={inputRef} id="feedback" type="text" />
+                        <Button my={4} type="submit">
+                            Submit Your Feedback
+                        </Button>
+                    </FormControl>
+                </Box>
+                <Box
+                    as="ul"
+                    display={'flex'}
+                    flexDirection="column"
+                    maxWidth={'700px'}
+                    width="full"
+                    padding={4}
+                >
+                    {allFeedback.map((feedback) => {
+                        return <Feedback key={feedback.id} {...feedback} />;
+                    })}
+                </Box>
+            </Flex>
         </>
     );
 }

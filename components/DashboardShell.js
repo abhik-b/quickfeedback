@@ -1,16 +1,8 @@
 import React from 'react';
-import {
-    ChakraProvider,
-    Flex,
-    Link,
-    Avatar,
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    Heading
-} from '@chakra-ui/react';
+import { ChakraProvider, Flex, Link, Avatar } from '@chakra-ui/react';
 import { useAuth } from '@/lib/auth';
-import AddSiteModal from './AddSiteModal';
+import TableHeader from './TableHeader';
+import NextLink from 'next/link';
 
 export default function DashboardShell({ children }) {
     const auth = useAuth();
@@ -36,10 +28,16 @@ export default function DashboardShell({ children }) {
                         >
                             Quick Feedback
                         </Link>
-                        <Link fontSize={['smaller', 'medium']} to="/">
-                            Sites
-                        </Link>
-                        <Link fontSize={['smaller', 'medium']}>Feedback</Link>
+                        <NextLink href={'/dashboard'} passHref>
+                            <Link fontSize={['smaller', 'medium']} to="/">
+                                Sites
+                            </Link>
+                        </NextLink>
+                        <NextLink href={'/feedback'} passHref>
+                            <Link fontSize={['smaller', 'medium']}>
+                                Feedback
+                            </Link>
+                        </NextLink>
                     </Flex>
                     <Flex alignItems="center">
                         <Link fontSize={['smaller', 'medium']} mr={4}>
@@ -55,21 +53,6 @@ export default function DashboardShell({ children }) {
                     py={8}
                     px={[4, 8]}
                 >
-                    <Flex flexDirection="column">
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <BreadcrumbLink>Sites / </BreadcrumbLink>
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                        <Flex justifyContent={'space-between'}>
-                            <Heading color="blackAlpha.800">Sites</Heading>
-                            <AddSiteModal
-                                color={'white'}
-                                backgroundColor={'gray.900'}
-                                label="+ Add Site"
-                            />
-                        </Flex>
-                    </Flex>
                     {children}
                 </Flex>
             </Flex>

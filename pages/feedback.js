@@ -1,5 +1,6 @@
 import DashboardShell from '@/components/DashboardShell';
 import EmptyState from '@/components/EmptyState';
+import FeedbackTable from '@/components/FeedbackTable';
 import SiteTable from '@/components/SiteTable';
 import SiteTableSkeleton from '@/components/SkeletonTable';
 import TableHeader from '@/components/TableHeader';
@@ -9,17 +10,17 @@ import Head from 'next/head';
 import React from 'react';
 import useSWR from 'swr';
 
-export default function Dashboard() {
+export default function Feedback() {
     const auth = useAuth();
     const { data, error } = useSWR(
-        auth.user ? ['/api/sites', auth.user.token] : null,
+        auth.user ? ['/api/feedback', auth.user.token] : null,
         fetcher
     );
     console.log(data);
     if (!data) {
         return (
             <DashboardShell>
-                <TableHeader label={'Sites'} />
+                <TableHeader label={'Feedback'} />
                 <SiteTableSkeleton />
             </DashboardShell>
         );
@@ -35,9 +36,9 @@ export default function Dashboard() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <DashboardShell>
-                <TableHeader label={'Sites'} />
-                {data.sites.length > 0 ? (
-                    <SiteTable sites={data.sites} />
+                <TableHeader label={'Feedback'} />
+                {data.feedbacks.length > 0 ? (
+                    <FeedbackTable feedbacks={data.feedbacks} />
                 ) : (
                     <EmptyState />
                 )}
